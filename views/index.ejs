@@ -1,0 +1,17 @@
+<%- include("partials/header.ejs") %>
+
+<% if(locals.message) { %>
+    <h1><%= locals.message %></h1>
+<% } else { %>
+    <h1>Richard's Blog Site</h1>
+<% } %>
+
+<div class="grid">
+    <% for (const blog of locals.data) { %>
+        <article id="<%= blog.id %>"><a href="/blog-post/<%= blog.id %>" data-blog-id="<%= blog.id%>"><%= `${blog.title}: ${blog.content}` %></a></Article>
+    <% } %>
+</div>
+
+<a href="/new-post" class="button">New post</a>
+
+<%- include("partials/footer.ejs") %>

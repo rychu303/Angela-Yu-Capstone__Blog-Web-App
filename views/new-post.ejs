@@ -1,0 +1,35 @@
+<%- include("partials/header.ejs") %>
+<!-- Quill editor stylesheet -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
+<h1>New Blog Post</h1>
+
+<form id="create-blog" action="/submit" method="post">
+    <label for="blog-title">Blog title</label>
+    <input type="text" name="title" id="blog-title">
+    <label for="blog-content">Blog Post</label>
+    <div id="editor">
+        <p>Hello World!</p>
+        <p>Some initial <strong>bold</strong> text</p>
+    </div>
+    <input type="hidden" name="content" id="blog-content">
+    <input type="submit" value="submit">
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+    const quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+</script>
+<!-- copy input from Quill editor into the hidden textarea -->
+<script>
+    let form = document.getElementById('create-blog')
+    let blogContent = document.getElementById('blog-content')
+    let editorContent = document.getElementById('editor').innerHTML
+
+    form.addEventListener('submit', () => {
+        blogContent.value = quill.getContents()
+    })
+</script>
+<%- include("partials/footer.ejs") %>
