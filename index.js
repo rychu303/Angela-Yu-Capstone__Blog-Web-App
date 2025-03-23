@@ -24,7 +24,7 @@ app.use(logger)
 const data = []
 
 app.get('/', (req, res) => {
-    console.log('home data', data)
+    // console.log('home data', data)
     res.render('index', { data })
 })
 
@@ -57,11 +57,12 @@ app.get('/blog-post/:id', (req, res) => {
     const blogID = req.params.id
     for (const entry of data) {
         if(entry.id == blogID) {
-            console.log('this is my entry:', entry)
+            // console.log('this is my entry:', entry)
             res.render('blog-post', entry)
+        } else {
+            res.render('blog-post', { title: 'Post not found', body: 'This post does not exist' })
         }
     }
-    res.render('blog-post')
 })
 
 app.listen(port, () => {

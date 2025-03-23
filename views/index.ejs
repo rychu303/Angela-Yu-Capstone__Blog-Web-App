@@ -8,7 +8,7 @@
 
 <div class="grid">
     <% for (const blog of locals.data) { %>
-        <article id="<%= blog.id %>"><a href="/blog-post/<%= blog.id %>" data-blog-id="<%= blog.id%>"><%= `${blog.title}: ${blog.content}` %></a></Article>
+        <article id="<%= blog.id %>"><a href="/blog-post/<%= blog.id %>" data-blog-id="<%= blog.id%>"><%= `${blog.title}` %></a></Article>
     <% } %>
 </div>
 

@@ -1,29 +1,40 @@
 <%- include("partials/header.ejs") %>
-<!-- Quill editor stylesheet -->
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+<!-- Quill text editor -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script> -->
+<!-- <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" /> -->
 
 <p><%= locals.date %></p>
 <h1><%= locals.title %></h1>
-<div id="editor"><%= locals.content%></div>
+<div id="blog-content"><%- locals.content %></div>
 
 <a href="/">Go back</a>
 
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
 <script>
-    const quill = new Quill('#editor', {
-        modules: {
-            toolbar: [
-                ['bold', 'italic'],
-                ['link', 'blockquote', 'code-block', 'image'],
-                [{ list: 'ordered' }, { list: 'bullet' }],
-            ],
-        },
-        theme: 'snow',
-    });
+    /* const quill = new Quill('#editor', {
+    //     modules: {
+    //         toolbar: [
+    //             ['bold', 'italic'],
+    //             ['link', 'blockquote', 'code-block', 'image'],
+    //             [{ list: 'ordered' }, { list: 'bullet' }],
+    //         ],
+    //     },
+    //     theme: 'snow',
+    // }); */
 
-    const blogContent = '<%- locals.content %>'
-    quill.setContents(JSON.parse(blogContent))
+    // function stringToHTML(str) {
+    //     const parser = new DOMParser();
+    //     const conent = parser.parseFromString(str, 'text/html');
+    //     return conent.body.firstChild;
+    // }
+
+    // const blogContent = '<%= locals.content %>'
+    // const htmlContent = stringToHTML(blogContent);
+    // console.log(blogContent)
+    // console.log(htmlContent)
+    // // document.querySelector('#blog-content').appendChild(htmlContent)
+    // // quill.enable(false);
+
 </script>
 
 <%- include("partials/footer.ejs") %>

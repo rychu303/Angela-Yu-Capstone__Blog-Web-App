@@ -41,17 +41,19 @@
         theme: 'snow',
     });
 
-    const resetForm = () => {
-        document.querySelector('[name="title"]').value = initialData.title;
-        quill.setContents(initialData.content);
-    };
+    // const resetForm = () => {
+    //     document.querySelector('[name="title"]').value = initialData.title;
+    //     quill.setContents(initialData.content);
+    // };
 
-    resetForm();
+    // resetForm();
 
     const form = document.querySelector('form');
+    let quillContent = quill.getSemanticHTML();
+    console.log(quillContent);
     form.addEventListener('formdata', (event) => {
         // Append Quill content before submitting
-        event.formData.append('content', JSON.stringify(quill.getContents().ops));
+        event.formData.append('content', JSON.stringify(quillContent));
     });
 
 </script>
