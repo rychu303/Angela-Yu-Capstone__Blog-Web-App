@@ -7,11 +7,26 @@
 <% } %>
 
 <div class="grid">
-    <% for (const blog of locals.data) { %>
-        <article id="<%= blog.id %>"><a href="/blog-post/<%= blog.id %>" data-blog-id="<%= blog.id%>"><%= `${blog.title}: ${blog.content}` %></a></Article>
+    <% for (const [i, blog] of locals.data.entries()) { %>
+        <% if (i === 0) { %>
+            <article id="<%= blog.id %>" class="article featured">
+                <p><%= blog.date %></p>
+                <h2>Latest Post</h2>
+                <a href="/blog-post/<%= blog.id %>" data-blog-id="<%= blog.id%>">
+                    <%= `${blog.title}` %>
+                </a>
+                <div class="summary"><p><%- blog.summary %></p></div>
+            </Article>
+        <% } else { %>
+            <article id="<%= blog.id %>" class="article">
+                <p><%= blog.date %></p>
+                <a href="/blog-post/<%= blog.id %>" data-blog-id="<%= blog.id%>">
+                    <%= `${blog.title}` %>
+                </a>
+                <div class="summary"><p><%- blog.summary %></p></div>
+            </Article>
+        <% } %>
     <% } %>
 </div>
-
-<a href="/new-post" class="button">New post</a>
 
 <%- include("partials/footer.ejs") %>

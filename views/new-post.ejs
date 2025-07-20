@@ -1,35 +1,71 @@
 <%- include("partials/header.ejs") %>
 <!-- Quill editor stylesheet -->
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+<!-- <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" /> -->
 
 <h1>New Blog Post</h1>
 
-<form id="create-blog" action="/submit" method="post">
+<form id="form" action="/submit" method="post">
     <label for="blog-title">Blog title</label>
-    <input type="text" name="title" id="blog-title">
+    <input type="text" name="title" id="blog-title" placeholder="Dear Internet..." required>
+    <label for="blog-summary">Blog summary</label>
+    <input type="text" name="summary" id="blog-summary" placeholder="This is a catchy subheading for your article" required>
     <label for="blog-content">Blog Post</label>
-    <div id="editor">
-        <p>Hello World!</p>
-        <p>Some initial <strong>bold</strong> text</p>
-    </div>
+    <div id="editor"></div>
     <input type="hidden" name="content" id="blog-content">
     <input type="submit" value="submit">
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script>
-    const quill = new Quill('#editor', {
-        theme: 'snow'
-    });
-</script>
-<!-- copy input from Quill editor into the hidden textarea -->
-<script>
-    let form = document.getElementById('create-blog')
-    let blogContent = document.getElementById('blog-content')
-    let editorContent = document.getElementById('editor').innerHTML
+    const initialData = {
+        title: '',
+        // `about` is a Delta object
+        // Learn more at: https://quilljs.com/docs/delta
+        // content: [
+            // {
+            //     insert:
+            //         'h \n',
+            // },
+        // ],
+    };
 
-    form.addEventListener('submit', () => {
-        blogContent.value = quill.getContents()
+    const quill = new Quill('#editor', {
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'strike', 'code'],
+                ['link', 'blockquote','code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ header: [2, 3, false] },'clean']
+            ],
+        },
+        placeholder: '"Hey, you! Yeah, the one pretending to work—let\'s waste five minutes together, shall we?"...',
+        theme: 'snow',
+    });
+
+    const resetForm = () => {
+        document.querySelector('[name="title"]').value = initialData.title;
+        quill.setContents(initialData.content);
+    };
+
+    resetForm();
+
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', (event) => {
+        // Quill editor text content is always at minimum 1 character with new line `\n`
+        if(quill.getText().length < 2) {
+            // event.preventDefault();
+            event.preventDefault()
+            alert('Please write something before submitting.');
+            return;
+        }
+        const formData = new FormData(form)
     })
+
+    form.addEventListener('formdata', (event) => {
+        // Append Quill content before submitting
+        event.formData.append('content', quill.getSemanticHTML());
+        console.log('formdata event fired')
+    });
 </script>
 <%- include("partials/footer.ejs") %>

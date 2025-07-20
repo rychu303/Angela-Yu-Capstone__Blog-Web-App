@@ -1,0 +1,79 @@
+<%- include("partials/header.ejs") %>
+    <!-- Quill editor stylesheet -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" /> -->
+    <p>
+        <%= locals.date %>
+    </p>
+    <h1>
+        <%= locals.title %>
+    </h1>
+    <div id="blog-content">
+        <%- locals.content %>
+    </div>
+    <form id="edit-blog-content-form" action="/update" method="POST">
+        <label for="edit-blog-content">Edit Blog Post</label>
+        <div id="editor">
+            <%- locals.content %>
+        </div>
+        <input type="hidden" name="content" id="edit-blog-content">
+        <input type="submit" value="submit">
+    </form>
+    <!-- <button id="edit-blog-post" type="button">Edit Post</button> -->
+
+    <a href="/">Go back</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script>
+        const initialData = {
+            title: '',
+        };
+
+        const quill = new Quill('#editor', {
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'strike', 'code'],
+                    ['link', 'blockquote', 'code-block'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    [{ header: [2, 3, false] }, 'clean']
+                ],
+            },
+            // placeholder: '"Hey, you! Yeah, the one pretending to work—let\'s waste five minutes together, shall we?"...',
+            theme: 'snow',
+        });
+
+        // const resetForm = () => {
+        //     // document.querySelector('[name="title"]').value = initialData.title;
+        //     quill.setContents(initialData.content);
+        // };
+
+        // resetForm();
+
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', (event) => {
+            // Quill editor text content is always at minimum 1 character with new line `\n`
+            if (quill.getText().length < 2) {
+                // event.preventDefault();
+                event.preventDefault()
+                alert('Please write something before submitting.');
+                return;
+            }
+            const formData = new FormData(form)
+        })
+
+        form.addEventListener('formdata', (event) => {
+            console.log('ryctest')
+            // Append Quill content before submitting
+            event.formData.append('content', quill.getSemanticHTML());
+        });
+
+        document.querySelector('#edit-blog-post').addEventListener('click', (event) => {
+            document.querySelector('#blog-content').style.display = 'none';
+            document.querySelector('#edit-blog-content-form').style.display = 'block';
+            event.target.style.display = 'none';
+        });
+
+
+    </script>
+
+    <%- include("partials/footer.ejs") %>
