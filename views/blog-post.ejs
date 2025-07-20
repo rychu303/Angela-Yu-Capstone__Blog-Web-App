@@ -21,6 +21,10 @@
     <input type="submit" value="submit">
 </form>
 <button id="edit-blog-post" type="button">Edit Post</button>
+<form method="POST" action="/blog-post/<%= locals.id%>?_method=DELETE">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">Delete Post</button>
+</form>
 
 <a href="/">Go back</a>
 
