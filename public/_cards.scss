@@ -1,0 +1,22 @@
+.grid {
+    --gap: 1.5rem;
+    --min-value: calc(30% + var(--gap));
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-value), 1fr));
+    gap: var(--gap, 1.5rem);
+}
+
+.article {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #fefefe;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.featured {
+    grid-column: 1 / -1;
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 8px;
+}

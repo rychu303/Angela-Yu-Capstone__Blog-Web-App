@@ -1,17 +1,16 @@
 <%- include("partials/header.ejs") %>
 <!-- Quill editor stylesheet -->
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+<!-- <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" /> -->
 
 <h1>New Blog Post</h1>
 
 <form id="form" action="/submit" method="post">
     <label for="blog-title">Blog title</label>
-    <input type="text" name="title" id="blog-title">
+    <input type="text" name="title" id="blog-title" placeholder="Dear Internet..." required>
+    <label for="blog-summary">Blog summary</label>
+    <input type="text" name="summary" id="blog-summary" placeholder="This is a catchy subheading for your article" required>
     <label for="blog-content">Blog Post</label>
-    <div id="editor">
-        <p>Hello World!</p>
-        <p>Some initial <strong>bold</strong> text</p>
-    </div>
+    <div id="editor"></div>
     <input type="hidden" name="content" id="blog-content">
     <input type="submit" value="submit">
 </form>
@@ -19,42 +18,54 @@
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script>
     const initialData = {
-        title: 'Wall-E',
+        title: '',
         // `about` is a Delta object
         // Learn more at: https://quilljs.com/docs/delta
-        content: [
-            {
-                insert:
-                    'A robot who has developed sentience, and is the only robot of his kind shown to be still functioning on Earth.\n',
-            },
-        ],
+        // content: [
+            // {
+            //     insert:
+            //         'h \n',
+            // },
+        // ],
     };
 
     const quill = new Quill('#editor', {
         modules: {
             toolbar: [
-                ['bold', 'italic'],
-                ['link', 'blockquote', 'code-block', 'image'],
+                ['bold', 'italic', 'strike', 'code'],
+                ['link', 'blockquote','code-block'],
                 [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ header: [2, 3, false] },'clean']
             ],
         },
+        placeholder: '"Hey, you! Yeah, the one pretending to work—let\'s waste five minutes together, shall we?"...',
         theme: 'snow',
     });
 
-    // const resetForm = () => {
-    //     document.querySelector('[name="title"]').value = initialData.title;
-    //     quill.setContents(initialData.content);
-    // };
+    const resetForm = () => {
+        document.querySelector('[name="title"]').value = initialData.title;
+        quill.setContents(initialData.content);
+    };
 
-    // resetForm();
+    resetForm();
 
     const form = document.querySelector('form');
-    let quillContent = quill.getSemanticHTML();
-    console.log(quillContent);
+
+    form.addEventListener('submit', (event) => {
+        // Quill editor text content is always at minimum 1 character with new line `\n`
+        if(quill.getText().length < 2) {
+            // event.preventDefault();
+            event.preventDefault()
+            alert('Please write something before submitting.');
+            return;
+        }
+        const formData = new FormData(form)
+    })
+
     form.addEventListener('formdata', (event) => {
         // Append Quill content before submitting
-        event.formData.append('content', JSON.stringify(quillContent));
+        event.formData.append('content', quill.getSemanticHTML());
+        console.log('formdata event fired')
     });
-
 </script>
 <%- include("partials/footer.ejs") %>

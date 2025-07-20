@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser'
 import express from 'express'
+import sanitizeHtml from 'sanitize-html';
 
 const app = express()
 const port = 3000
@@ -7,6 +8,7 @@ const port = 3000
 app.set('view engine', 'ejs')
 
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static('public'))
 
 // let requestRoute = ''
 
@@ -32,16 +34,80 @@ app.get('/new-post', (req, res) => {
     res.render('new-post')
 })
 
+app.post('/update/:id', (req, res) => {
+    console.log('can you see me?')
+    const blogID = req.params.id
+    console.log('blogID = ', blogID)
+    for (const entry of data) {
+        if(entry.id == blogID) {
+
+            let post = req.body
+
+            /* Sanitize HTML */
+            let cleanTitle = sanitizeHtml(`${post.title}`, {
+                allowedTags: [],
+                // allowedAttributes: {'a': ['href']},
+            })
+            let cleanSummary = sanitizeHtml(`${post.summary}`, {
+                allowedTags: [],
+                // allowedAttributes: {'a': ['href']},
+            })
+            let cleanContent = sanitizeHtml(`${post.content[1]}`, {
+                allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3'],
+                allowedAttributes: {
+                    'a': ['href', 'target', 'rel'],
+                },
+            })
+
+            entry.content = cleanContent
+            entry.title = cleanTitle
+            entry.summary = cleanSummary
+
+            // res.redirect('/blog-post/' + blogID)
+            // res.render('blog-post', entry)
+            res.redirect('/')
+        }
+    }
+})
+
 app.post('/submit', (req, res) => {
-    const date = new Date()
-    const day = date.getDay()
-    const month = date.getMonth()
-    const year = date.getFullYear()
+    const today = new Date()
+    const options = {
+        // weekday: "long",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    }
+    const formattedDate = new Intl.DateTimeFormat("en-US", options).format(today)
+
+    /* Grab blog post submission */
     let post = req.body
+
+    /* Sanitize HTML */
+    let cleanTitle = sanitizeHtml(`${post.title}`, {
+        allowedTags: [],
+        // allowedAttributes: {'a': ['href']},
+    })
+    let cleanSummary = sanitizeHtml(`${post.summary}`, {
+        allowedTags: [],
+        // allowedAttributes: {'a': ['href']},
+    })
+    let cleanContent = sanitizeHtml(`${post.content[1]}`, {
+        allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3'],
+        allowedAttributes: {
+            'a': ['href', 'target', 'rel'],
+        },
+    })
+
+    /* Set stored data values */
     post.id = data.length + 1
-    post.date = `${month} / ${day} / ${year}`
+    post.date = formattedDate
+    // post.date = `${month} / ${day} / ${year}`
+    post.title = cleanTitle
+    post.summary = cleanSummary
+    post.content = cleanContent
+
     data.push(post)
-    // console.log(post)
     // submitAlert = true
     // let submitAlertMsg = 'Your new blog post has published'
     res.redirect('/')
@@ -59,23 +125,13 @@ app.get('/blog-post/:id', (req, res) => {
         if(entry.id == blogID) {
             // console.log('this is my entry:', entry)
             res.render('blog-post', entry)
-        } else {
-            res.render('blog-post', { title: 'Post not found', body: 'This post does not exist' })
         }
+        // else {
+        //     res.render('blog-post', { title: 'Post not found', body: 'This post does not exist' })
+        // }
     }
 })
 
 app.listen(port, () => {
     console.log(`App listening on port ${3000}`)
 })
-
-// QUILL Rich Text Editor
-// const quillOptions = {
-//     debug: 'info',
-//     modules: {
-//         toolbar: true,
-//     },
-//     placeholder: 'Compose an epic...',
-//     theme: 'snow'
-// }
-// const quill = new Quill('#editor', quillOptions);  // First matching element will be used
