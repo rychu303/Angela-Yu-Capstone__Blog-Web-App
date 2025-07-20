@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser'
 import express from 'express'
 import sanitizeHtml from 'sanitize-html';
+import methodOverride from 'method-override'
 
 const app = express()
 const port = 3000
@@ -9,6 +10,7 @@ app.set('view engine', 'ejs')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
+app.use(methodOverride('_method'))
 
 // let requestRoute = ''
 
@@ -62,6 +64,23 @@ app.post('/update/:id', (req, res) => {
             entry.content = cleanContent
             entry.title = cleanTitle
             entry.summary = cleanSummary
+
+            // res.redirect('/blog-post/' + blogID)
+            // res.render('blog-post', entry)
+            res.redirect('/')
+        }
+    }
+})
+/* Delete Post */
+app.delete('/blog-post/:id', (req, res) => {
+    console.log('can you see me?')
+    const blogID = req.params.id
+    console.log('blogID = ', blogID)
+    for (const entry of data) {
+        if(entry.id == blogID) {
+
+            data.splice(data.indexOf(entry), 1)
+            console.log('You deleted the blog post')
 
             // res.redirect('/blog-post/' + blogID)
             // res.render('blog-post', entry)
