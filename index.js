@@ -26,6 +26,7 @@ app.use(logger)
 // let submitAlert = false
 // let submitAlertMsg = ''
 const data = []
+let counter = 1
 
 app.get('/', (req, res) => {
     // console.log('home data', data)
@@ -36,6 +37,7 @@ app.get('/new-post', (req, res) => {
     res.render('new-post')
 })
 
+/* Edit Post */
 app.post('/update/:id', (req, res) => {
     console.log('can you see me?')
     const blogID = req.params.id
@@ -71,6 +73,7 @@ app.post('/update/:id', (req, res) => {
         }
     }
 })
+
 /* Delete Post */
 app.delete('/blog-post/:id', (req, res) => {
     console.log('can you see me?')
@@ -89,6 +92,7 @@ app.delete('/blog-post/:id', (req, res) => {
     }
 })
 
+/* Create and Save Post */
 app.post('/submit', (req, res) => {
     const today = new Date()
     const options = {
@@ -119,7 +123,9 @@ app.post('/submit', (req, res) => {
     })
 
     /* Set stored data values */
-    post.id = data.length + 1
+    // post.id = data.length + 1 >= counter ? data.length + 1 : counter + 1
+    post.id = counter
+    counter++ // primitive way to keep track of IDs used, so if a blog is deleted, the next blog post will not reuse that ID
     post.date = formattedDate
     // post.date = `${month} / ${day} / ${year}`
     post.title = cleanTitle
