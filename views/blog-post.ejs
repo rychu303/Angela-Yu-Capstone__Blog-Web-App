@@ -21,7 +21,7 @@
     <input type="submit" value="submit">
 </form>
 <button id="edit-blog-post" type="button">Edit Post</button>
-<form method="POST" action="/blog-post/<%= locals.id%>?_method=DELETE">
+<form id="delete-blog-post" method="POST" action="/blog-post/<%= locals.id%>?_method=DELETE">
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit">Delete Post</button>
 </form>
@@ -55,6 +55,8 @@
     // resetForm();
 
     const form = document.querySelector('#edit-blog-content-form');
+    const editBlogBtn = document.querySelector('#edit-blog-post')
+    const deleteBlogBtn = document.querySelector('#delete-blog-post')
 
     form.addEventListener('submit', (event) => {
         // Quill editor text content is always at minimum 1 character with new line `\n`
@@ -74,10 +76,18 @@
         // console.log('data sent')
     });
 
-    document.querySelector('#edit-blog-post').addEventListener('click', (event) => {
+    editBlogBtn.addEventListener('click', (event) => {
         document.querySelector('#blog-content').style.display = 'none';
         document.querySelector('#edit-blog-content-form').style.display = 'block';
         event.target.style.display = 'none';
+    });
+
+    deleteBlogBtn.addEventListener('submit', (event) => {
+        event.preventDefault()
+        const confirmDeletePost = confirm('Are you sure you want to delete this blog post?')
+        if(confirmDeletePost) {
+            deleteBlogBtn.submit()
+        }
     });
 
 
