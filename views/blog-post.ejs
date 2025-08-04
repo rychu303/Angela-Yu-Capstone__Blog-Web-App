@@ -6,7 +6,7 @@
 <div id="blog-content">
     <h1><%= locals.title %></h1>
     <p><%= locals.summary %></p>
-    <%- locals.content %>
+    <div id="blog-text"><%- locals.content %></div>
 </div>
 <form id="edit-blog-content-form" action="/update/<%= locals.id%>" method="post">
     <label for="blog-title">Blog title</label>
@@ -30,6 +30,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script>
+    // const blogText = document.querySelector('#blog-text');
+    // console.log(blogText.innerHTML);
+    // blogText.innerHTML = blogText.innerHTML.replace(/<p>\s*<\/p>/g, '');
     const initialData = {
         title: '',
     };
