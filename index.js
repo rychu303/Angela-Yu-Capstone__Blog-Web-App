@@ -52,15 +52,23 @@ app.post('/update/:id', (req, res) => {
                 allowedTags: [],
                 // allowedAttributes: {'a': ['href']},
             })
-            let cleanSummary = sanitizeHtml(`${post.summary}`, {
+            let cleanSummary =
+            sanitizeHtml(`${post.summary}`, {
                 allowedTags: [],
                 // allowedAttributes: {'a': ['href']},
             })
             let cleanContent = sanitizeHtml(`${post.content[1]}`, {
-                allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3'],
+                allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3', 'br'],
                 allowedAttributes: {
                     'a': ['href', 'target', 'rel'],
                 },
+                // textFilter: function (text, tagName) {
+                //     // console.log('textFilter', text, tagName)
+                //     if (tagName === "p" && /^\s*$/.test(text)) {
+                //         // return text.trim() === "" || text.trim() === '<br>' ? '' : text
+                //         return /^\s*$/.test(text) ? '' : text
+                //     }
+                // }
             })
 
             entry.content = cleanContent
@@ -114,12 +122,32 @@ app.post('/submit', (req, res) => {
     let cleanSummary = sanitizeHtml(`${post.summary}`, {
         allowedTags: [],
         // allowedAttributes: {'a': ['href']},
+        // test
     })
     let cleanContent = sanitizeHtml(`${post.content[1]}`, {
-        allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3'],
+        allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3', 'br'],
         allowedAttributes: {
             'a': ['href', 'target', 'rel'],
         },
+        // transformTags: {
+        //     'pre': function(tagName, attribs) {
+        //         return {
+        //             tagName: 'pre',
+        //             attribs: {
+        //                 class: "codeblock"
+        //             }
+        //         }
+        //     }
+        // },
+        // textFilter: function(text, tagName) {
+        //     // console.log('textFilter', text, tagName)
+        //     if (tagName === "p") {
+        //         // console.log('textFilter', text, tagName)
+        //         return text.trim() === "" || text.trim() === '<br>' ? '' : text
+        //     } else {
+        //         return text
+        //     }
+        // }
     })
 
     /* Set stored data values */
