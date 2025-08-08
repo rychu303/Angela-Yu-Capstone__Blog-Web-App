@@ -78,9 +78,9 @@
 }
 
 // My Custom Overrides
-main p {
-    margin-block-end: 1rem;
-}
+// main p {
+//     margin-block-end: 1rem;
+// }
 
 // https: //css-tricks.com/examples/Blockquotes/
 blockquote {
@@ -94,7 +94,8 @@ blockquote {
 // https: //css-tricks.com/styling-code-in-and-out-of-blocks/
 
 /* For all <code> */
-code {
+code,
+pre {
     font-family: MyFancyCustomFont, monospace;
     // font-size: inherit;
 }
@@ -108,4 +109,27 @@ td>code {
     padding: 2px 4px;
     background-color: #f0f0f0;
     border-radius: 3px;
+}
+
+pre {
+    font-size: 85%;
+    padding: 1rem;
+    background-color: #1b1b1b;
+    color: #f5d67b;
+    border-radius: 0.5rem;
+    display: block;
+    // background: none;
+    white-space: pre;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+    max-width: 100%;
+    min-width: 100px;
+    // padding: 0;
+}
+
+// Space out text elements in blog content
+div#blog-content > * + *,
+div#blog-text > * + *,
+.wrapper > * + * {
+    margin-top: 1em;
 }
