@@ -14,18 +14,64 @@ app.use(methodOverride('_method'))
 
 // let requestRoute = ''
 
-const logger = (req, res, next) => {
-    // console.log (`Request Method: ${req.method}; Request URL: ${req.url}`)
-    // req.requestRoute = `${req.url}`
-    next()
-}
+// const logger = (req, res, next) => {
+//     // console.log (`Request Method: ${req.method}; Request URL: ${req.url}`)
+//     // req.requestRoute = `${req.url}`
+//     next()
+// }
 
 
-app.use(logger)
+// app.use(logger)
 
 // let submitAlert = false
 // let submitAlertMsg = ''
-const data = []
+const data = [
+    {
+        id: 1,
+        title: 'My First Blog Post',
+        summary: 'This is a summary of my first blog post.',
+        content:
+            `<h2>Test Content</h2>
+            <p>This is a <strong>paragraph</strong> with <em>emphasized</em> text and a <a href="https://example.com" target="_blank" rel="noopener noreferrer">link</a>.</p>
+            <p>Vestibulum volutpat auctor dolor. In tristique malesuada mi, quis lacinia metus. Donec at mauris sodales, suscipit orci vel, pellentesque lectus. Ut sed turpis leo. Nullam commodo nisi in arcu tincidunt sodales. Ut egestas ipsum ipsum, vel eleifend justo accumsan et. Donec porta felis ut mi fringilla tristique. Pellentesque rhoncus eleifend leo a faucibus. Vivamus in risus sed ipsum finibus convallis a et risus. Curabitur finibus pulvinar risus, eget cursus mi ultrices in. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam accumsan felis sed sapien consectetur volutpat. Aenean efficitur, justo ac facilisis mollis, sapien sapien iaculis nunc, vel rhoncus nulla nisi id nisl. Nullam sed dolor at justo ornare luctus vel eget velit.</p>
+            <blockquote>This is a blockquote example.</blockquote><pre><code>const example = "This is code inside a pre tag";
+const test = () => {
+    console.log("hello world")
+}
+</code></pre>
+            <ul>
+                <li>Unordered list item 1</li>
+                <li>Unordered list item 2</li>
+                <li>
+                    <code>
+                        margin-block-end: 1rem;
+                    </code>
+                </li>
+            </ul>
+            <ol>
+                <li>Ordered list item 1</li>
+                <li>Ordered list item 2</li>
+            </ol>
+            <p>This text contains <s>strikethrough</s> and a line break.<br>Here is the next line.</p>
+            <h3>Subheading Example</h3>
+            <p>More content under a subheading.</p>`,
+        date: 'Jan 1, 2023'
+    },
+    {
+        id: 2,
+        title: 'My Second Blog Post',
+        summary: 'This is a summary of my second blog post.',
+        content: '<p>This is the content of my second blog post.</p>',
+        date: 'Feb 1, 2023'
+    },
+    {
+        id: 3,
+        title: 'My Third Blog Post',
+        summary: 'This is a summary of my third blog post.',
+        content: '<p>This is the content of my third blog post.</p>',
+        date: 'Mar 1, 2023'
+    }
+]
 let counter = 1
 
 app.get('/', (req, res) => {
@@ -52,15 +98,23 @@ app.post('/update/:id', (req, res) => {
                 allowedTags: [],
                 // allowedAttributes: {'a': ['href']},
             })
-            let cleanSummary = sanitizeHtml(`${post.summary}`, {
+            let cleanSummary =
+            sanitizeHtml(`${post.summary}`, {
                 allowedTags: [],
                 // allowedAttributes: {'a': ['href']},
             })
             let cleanContent = sanitizeHtml(`${post.content[1]}`, {
-                allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3'],
+                allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3', 'br'],
                 allowedAttributes: {
                     'a': ['href', 'target', 'rel'],
                 },
+                // textFilter: function (text, tagName) {
+                //     // console.log('textFilter', text, tagName)
+                //     if (tagName === "p" && /^\s*$/.test(text)) {
+                //         // return text.trim() === "" || text.trim() === '<br>' ? '' : text
+                //         return /^\s*$/.test(text) ? '' : text
+                //     }
+                // }
             })
 
             entry.content = cleanContent
@@ -114,12 +168,25 @@ app.post('/submit', (req, res) => {
     let cleanSummary = sanitizeHtml(`${post.summary}`, {
         allowedTags: [],
         // allowedAttributes: {'a': ['href']},
+        // test
     })
     let cleanContent = sanitizeHtml(`${post.content[1]}`, {
-        allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3'],
+        allowedTags: ['p', 'a', 'strong', 's', 'em', 'code', 'blockquote', 'pre', 'ul', 'ol', 'li', 'h2', 'h3', 'br'],
         allowedAttributes: {
             'a': ['href', 'target', 'rel'],
         },
+        // transformTags: {
+        //     'pre': 'code',
+        // },
+        // textFilter: function(text, tagName) {
+        //     // console.log('textFilter', text, tagName)
+        //     if (tagName === "p") {
+        //         // console.log('textFilter', text, tagName)
+        //         return text.trim() === "" || text.trim() === '<br>' ? '' : text
+        //     } else {
+        //         return text
+        //     }
+        // }
     })
 
     /* Set stored data values */

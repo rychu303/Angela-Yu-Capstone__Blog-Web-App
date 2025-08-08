@@ -6,7 +6,7 @@
 <div id="blog-content">
     <h1><%= locals.title %></h1>
     <p><%= locals.summary %></p>
-    <%- locals.content %>
+    <div id="blog-text"><%- locals.content %></div>
 </div>
 <form id="edit-blog-content-form" action="/update/<%= locals.id%>" method="post">
     <label for="blog-title">Blog title</label>
@@ -20,16 +20,21 @@
     <input type="hidden" name="content" id="edit-blog-content">
     <input type="submit" value="submit">
 </form>
-<button id="edit-blog-post" type="button">Edit Post</button>
-<form id="delete-blog-post" method="POST" action="/blog-post/<%= locals.id%>?_method=DELETE">
-    <input type="hidden" name="_method" value="DELETE">
-    <button type="submit">Delete Post</button>
-</form>
+<div class="button--wrapper">
+    <button id="edit-blog-post" type="button">Edit Post</button>
+    <form id="delete-blog-post" method="POST" action="/blog-post/<%= locals.id%>?_method=DELETE">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete Post</button>
+    </form>
+</div>
 
-<a href="/">Go back</a>
+<div class="button--wrapper"><a href="/">Go back</a></div>
 
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script>
+    // const blogText = document.querySelector('#blog-text');
+    // console.log(blogText.innerHTML);
+    // blogText.innerHTML = blogText.innerHTML.replace(/<p>\s*<\/p>/g, '');
     const initialData = {
         title: '',
     };
@@ -46,6 +51,21 @@
         // placeholder: '"Hey, you! Yeah, the one pretending to work—let\'s waste five minutes together, shall we?"...',
         theme: 'snow',
     });
+
+    // quill.keyboard.addBinding({
+    //         key: 'enter', // Enter key
+    //         shiftKey: true,
+    //     }, function (range, context) {
+    //         alert('Shift + Enter pressed');
+    //         this.quill.insettText(range.index, '\n', 'user');
+    //         this.quill.setSelection(range.index + 1, Quill.sources.SILENT); // Moves cursor
+
+    //     });
+
+
+
+
+
 
     // const resetForm = () => {
     //     // document.querySelector('[name="title"]').value = initialData.title;
